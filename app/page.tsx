@@ -29,10 +29,10 @@ export default function LoginPage() {
           email: user.email
         });
 
-        router.push('/'); // Redirect after signup
+        router.push('/boards'); // Redirect after signup
       } else {
         await signInWithEmailAndPassword(auth, email, password);
-        router.push('/');
+        router.push('/boards');
       }
     } catch (error: any) {
       setErrorMsg(error.message || 'Something went wrong');
