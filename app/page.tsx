@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "./context/AuthProvider";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from "@/utils/firestore";
+import db, { auth } from "@/utils/firestore";
 import { doc, setDoc } from 'firebase/firestore';
 
 export default function LoginPage() {
