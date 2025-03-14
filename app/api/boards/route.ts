@@ -26,37 +26,45 @@ export async function GET(req: NextRequest) {
   }
 }
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { boardId: string } }
-) {
+export async function PUT(req: NextRequest) {
   try {
     const body = await req.json();
-    const { title } = body;
+    const { boardId, title } = body;
+
+    if (!boardId?.trim()) {
+      return NextResponse.json({ error: 'Board ID is required' }, { status: 400 });
+    }
+
     if (!title?.trim()) {
       return NextResponse.json({ error: 'Title is required' }, { status: 400 });
     }
-    const ref = doc(db, 'boards', params.boardId);
+
+    const ref = doc(db, 'boards', boardId);
     await updateDoc(ref, { title: title.trim() });
+
     return NextResponse.json({ message: 'Board updated' });
   } catch (err) {
     return NextResponse.json({ error: 'Failed to update board' }, { status: 500 });
   }
 }
 
-export async function DELETE(
-  _req: NextRequest,
-  { params }: { params: { boardId: string } }
-) {
+export async function DELETE(req: NextRequest) {
   try {
-    const ref = doc(db, 'boards', params.boardId);
+    const body = await req.json();
+    const { boardId } = body;
+
+    if (!boardId?.trim()) {
+      return NextResponse.json({ error: 'Board ID is required' }, { status: 400 });
+    }
+
+    const ref = doc(db, 'boards', boardId);
     await deleteDoc(ref);
+
     return NextResponse.json({ message: 'Board deleted' });
   } catch (err) {
     return NextResponse.json({ error: 'Failed to delete board' }, { status: 500 });
   }
 }
-
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
