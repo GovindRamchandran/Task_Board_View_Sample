@@ -44,7 +44,7 @@ export async function POST(
         createdAt: Timestamp.now(),
       }
     );
-    return NextResponse.json({ id: taskRef.id, title });
+    return NextResponse.json({ id: taskRef.id, title: title.trim(), description: title?.trim()});
   } catch (err) {
     return NextResponse.json({ error: 'Failed to create task' }, { status: 500 });
   }

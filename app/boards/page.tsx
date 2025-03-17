@@ -131,9 +131,10 @@ export default function BoardListPage() {
       setTasks((prev) => {
         const updated = { ...prev };
         updated[fromColumnId] = prev[fromColumnId].filter((t) => t.id !== task.id);
-        updated[toColumnId] = [...(prev[toColumnId] || []), { ...res.data }];
+        updated[toColumnId] = [...(prev[toColumnId] || []), { ...res.data, description: task.description }];
         return updated;
       });
+      console.log(tasks);
     } catch (err) {
       console.error("Error moving task", err);
     }
@@ -472,7 +473,7 @@ export default function BoardListPage() {
                       />
                       {`${col.title} (${tasks[col.id]?.length ?? 0})`}
                     </h2>
-                    <div className="space-y-3">
+                    <div className="space-y-3 min-h-[200px]">
                       {(tasks[col.id] || []).map((task) => (
                         <div
                           key={task.id}
@@ -481,11 +482,15 @@ export default function BoardListPage() {
                           className="bg-white rounded-md p-3 shadow border border-gray-200 cursor-move relative"
                         >
                           <p className="font-medium text-sm">{task.title}</p>
-                          {task.description?.trim() && (
+                          {task.description?.trim() ? (
                             <p className="text-xs text-gray-500">
                               {task.description}
                             </p>
-                          )}
+                          ) : task.title?.trim() ? (
+                            <p className="text-xs text-gray-500">
+                              {task.title}
+                            </p>
+                          ) : <></>}
 
                           {/* 3-dot menu for tasks */}
                           <button
